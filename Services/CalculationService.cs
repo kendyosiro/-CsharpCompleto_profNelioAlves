@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Secao16_ExpressoesLambda_Delegates_LINQ.Services
 {
     class CalculationService
     {
-        public static double Sum(double a, double b)
+        public static void ShowSum(double a, double b)
         {
-            return a + b;
+            double sum =  a + b;
+            Console.WriteLine($"A soma dos números {a} e {b} é igual a {sum}.");
         }
 
-        public static double Max(double a, double b)
+        public static void ShowMax(double a, double b)
         {
-            return (a > b) ? a : b;
+            double bigger = (a > b) ? a : b;
+            Console.WriteLine($"O maior entre {a} e {b} é {bigger}.");
         }
 
         public static double Square(double a)
