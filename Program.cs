@@ -1,5 +1,6 @@
 ﻿using Secao16_ExpressoesLambda_Delegates_LINQ.Entities;
 using Secao16_ExpressoesLambda_Delegates_LINQ.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Secao16_ExpressoesLambda_Delegates_LINQ
@@ -8,21 +9,22 @@ namespace Secao16_ExpressoesLambda_Delegates_LINQ
     {
         static void Main(string[] args)
         {
-            Product p1 = new Product("TV", 1200.00);
-            Product p2 = new Product("Mesa", 400.00);
-            Product p3 = new Product("Geladeira", 2300.00);
-            Product p4 = new Product("Cadeira", 390.00);
-
             List<Product> produtos = new List<Product>();
-            produtos.Add(p1);
-            produtos.Add(p2);
-            produtos.Add(p3);
-            produtos.Add(p4);
+            produtos.Add(new Product("TV", 1200.00));
+            produtos.Add(new Product("Mesa", 400.00));
+            produtos.Add(new Product("Geladeira", 2300.00));
+            produtos.Add(new Product("Cadeira", 390.00));
 
-            //Somente este comando resolveria:
-            //produtos.RemoveAll(x => x.Price < 1000.00);
+            //Formas de resolucao:
+            //1-criação de um Action:
+            //Action<Product> act = UpdatePrice;
+            //produtos.ForEach(act);
 
-            produtos.RemoveAll(TestProduct);
+            //2-passando um método void:
+            //produtos.ForEach(UpdatePrice);
+
+            //3-passando uma expressão lambda. Neste caso, não precisaria da funcao UpdatePrice:
+            produtos.ForEach(p => { p.Price += p.Price * 0.1; });
 
             foreach (Product product in produtos)
             {
@@ -30,9 +32,9 @@ namespace Secao16_ExpressoesLambda_Delegates_LINQ
             }
         }
 
-        static bool TestProduct(Product p)
+        static void UpdatePrice(Product p)
         {
-            return p.Price < 1000.00;
+            p.Price += p.Price * 0.1;
         }
     }
 }
