@@ -1,10 +1,14 @@
 ﻿using Secao16_ExpressoesLambda_Delegates_LINQ.Entities;
-using Secao16_ExpressoesLambda_Delegates_LINQ.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 
 namespace Secao16_ExpressoesLambda_Delegates_LINQ
 {
+
+    //Fazer um programa que, a partir de uma lista de produtos, gere
+    //uma nova lista contendo os nomes dos produtos em caixa alta.
     class Program
     {
         static void Main(string[] args)
@@ -15,26 +19,33 @@ namespace Secao16_ExpressoesLambda_Delegates_LINQ
             produtos.Add(new Product("Geladeira", 2300.00));
             produtos.Add(new Product("Cadeira", 390.00));
 
-            //Formas de resolucao:
-            //1-criação de um Action:
-            //Action<Product> act = UpdatePrice;
-            //produtos.ForEach(act);
+            //1-utilizando Select passando função como argumento
+            //List<string> results = produtos.Select(NameUpper).ToList();
 
-            //2-passando um método void:
-            //produtos.ForEach(UpdatePrice);
+            //2-criando uma Func que recebe um Product e retorna um string e passa no select o nome da func:
+            //Func<Product, string> func = NameUpper;
+            //List<string> results = produtos.Select(func).ToList();
 
-            //3-passando uma expressão lambda. Neste caso, não precisaria da funcao UpdatePrice:
-            produtos.ForEach(p => { p.Price += p.Price * 0.1; });
+            //3-criando uma Func utilizando expressão lambda:
+            //Func<Product, string> func = p => p.Name.ToUpper();
+            //List<string> results = produtos.Select(func).ToList();
 
-            foreach (Product product in produtos)
+            //se eu colocar chaves na funcao, tenho que colocar a palavra return:
+            // Func<Product, string> func = p => { return p.Name.ToUpper(); };
+            // List<string> results = produtos.Select(func).ToList();
+
+            //a forma mais fácil é utiliza a expressão lambda dentro do select:
+            List<string> results = produtos.Select(p => p.Name.ToUpper()).ToList();
+
+            foreach (string s in results)
             {
-                System.Console.WriteLine(product.ToString());
+                System.Console.WriteLine(s);
             }
         }
 
-        static void UpdatePrice(Product p)
+        static string NameUpper(Product p)
         {
-            p.Price += p.Price * 0.1;
+            return p.Name.ToUpper();
         }
     }
 }
